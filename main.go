@@ -1,4 +1,4 @@
-package main
+package elemx
 
 import (
 	"fmt"
