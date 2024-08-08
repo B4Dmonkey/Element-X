@@ -37,7 +37,7 @@ func TestSetAttribute(t *testing.T) {
 	expected := "<html lang=\"en\"></html>"
 	element := HtmlElement{Tag: "html"}
 	element.SetAttribute("lang", "en")
-	result := Render(&element)
+	result := element.render()
 
 	assert.Equal(expected, result, "Test SetAttribute")
 
@@ -56,6 +56,6 @@ func TestSetAttribute(t *testing.T) {
 	for _, test := range tests {
 		element := HtmlElement{Tag: "html"}
 		test.attribute(&element)
-		assert.Equal(test.expected, Render(&element), test.description)
+		assert.Equal(test.expected, element.render(), test.description)
 	}
 }

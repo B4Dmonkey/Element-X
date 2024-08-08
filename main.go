@@ -2,8 +2,9 @@ package elemx
 
 import "fmt"
 
-func Render(element *HtmlElement) string {
-	return element.toString()
+func Render(tag string, content string) string {
+	element := HtmlElement{Tag: tag, Content: content}
+	return element.render()
 }
 
 type HtmlElement struct {
@@ -12,7 +13,7 @@ type HtmlElement struct {
 	Attributes map[string]string
 }
 
-func (e *HtmlElement) toString() string {
+func (e *HtmlElement) render() string {
 	attributes := ""
 	for key, value := range e.Attributes {
 		attributes += fmt.Sprintf(` %s="%s"`, key, value)
@@ -35,4 +36,4 @@ func Lang(lang string) SetElementAttributes {
 	}
 }
 
-func Html(content string) string { return Render(&HtmlElement{Tag: "html", Content: content} )}
+func Html(c string) string { return Render("html", c) }
