@@ -24,6 +24,11 @@ func TestRender(t *testing.T) {
 			expected:        "<html>Hey young world</html>",
 			renderedElement: func() string { return Html("Hey young world") },
 		},
+		{
+			description:     "Render Element with Attribute",
+			expected:        "<html lang=\"en\"></html>",
+			renderedElement: func() string { return Html("", Lang("en")) },
+		},
 	}
 
 	for _, test := range tests {
@@ -44,7 +49,7 @@ func TestSetAttribute(t *testing.T) {
 	tests := []struct {
 		description string
 		expected    string
-		attribute   SetElementAttributes
+		attribute   SetAttributes
 	}{
 		{
 			description: "SetAttribute",

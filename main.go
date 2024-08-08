@@ -2,15 +2,20 @@ package elemx
 
 import "fmt"
 
-func Render(tag string, content string) string {
-	element := HtmlElement{Tag: tag, Content: content}
-	return element.render()
-}
-
 type HtmlElement struct {
 	Tag        string
 	Content    string
 	Attributes map[string]string
+}
+
+type SetAttributes func(*HtmlElement)
+
+func Render(tag string, content string, attrs []SetAttributes) string {
+	element := HtmlElement{Tag: tag, Content: content}
+	for _, attr := range attrs {
+		attr(&element)
+	}
+	return element.render()
 }
 
 func (e *HtmlElement) render() string {
@@ -28,12 +33,10 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 	e.Attributes[key] = value
 }
 
-type SetElementAttributes func(*HtmlElement)
-
-func Lang(lang string) SetElementAttributes {
+func Lang(lang string) SetAttributes {
 	return func(e *HtmlElement) {
 		e.SetAttribute("lang", "en")
 	}
 }
 
-func Html(c string) string { return Render("html", c) }
+func Html(c string, attrs ...SetAttributes) string { return Render("html", c, attrs) }
