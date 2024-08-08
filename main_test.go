@@ -68,6 +68,11 @@ func TestHtmxCompatibility(t *testing.T) {
 			expected:    "<head><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",
 			rendered:    Head(""),
 		},
+		{
+			description: "Empty Head Tag without htmx",
+			expected:    "<head><title>ElementX</title><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",
+			rendered:    Head(Title("ElementX")),
+		},
 	}
 
 	for _, test := range tests {

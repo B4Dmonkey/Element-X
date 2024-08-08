@@ -16,7 +16,7 @@ func Render(tag string, content string, attrs []SetAttributes) string {
 		attr(&element)
 	}
 
-	if tag == "html" {
+	if tag == HTML {
 		return fmt.Sprintf("<!DOCTYPE html>%s", element.render())
 	}
 
@@ -39,26 +39,29 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 }
 
 func Lang(lang string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute("lang", "en") }
+	return func(e *HtmlElement) { e.SetAttribute(LANG, "en") }
 }
 
-func Src(src string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute("src", src) }
+func Src(source string) SetAttributes {
+	return func(e *HtmlElement) { e.SetAttribute(SRC, source) }
 }
 
 func ApplyHtmxCDNSource() SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute("src", "https://unpkg.com/htmx.org@2.0.1") }
+	return func(e *HtmlElement) { e.SetAttribute(SRC, "https://unpkg.com/htmx.org@2.0.1") }
 }
 
 func IncludeHtmx() string {
 	return Script("", ApplyHtmxCDNSource())
 }
 
-func Html(c string, attrs ...SetAttributes) string   { return Render("html", c, attrs) }
-func Body(c string, attrs ...SetAttributes) string   { return Render("body", c, attrs) }
-func Div(c string, attrs ...SetAttributes) string    { return Render("div", c, attrs) }
-func Script(c string, attrs ...SetAttributes) string { return Render("script", c, attrs) }
+func Html(c string, attrs ...SetAttributes) string   { return Render(HTML, c, attrs) }
+func Body(c string, attrs ...SetAttributes) string   { return Render(BODY, c, attrs) }
+func Div(c string, attrs ...SetAttributes) string    { return Render(DIV, c, attrs) }
+func Script(c string, attrs ...SetAttributes) string { return Render(SCRIPT, c, attrs) }
+func Title(c string, attrs ...SetAttributes) string  { return Render(TITLE, c, attrs) }
 func Head(c string, attrs ...SetAttributes) string {
-	if len(attrs) == 0 {c = c +IncludeHtmx()}
-	return Render("head", c, attrs)
+	if len(attrs) == 0 {
+		c = c + IncludeHtmx()
+	}
+	return Render(HEAD, c, attrs)
 }
