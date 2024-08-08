@@ -27,7 +27,7 @@ func TestRender(t *testing.T) {
 		{
 			description: "Render Element with Attribute",
 			expected:    "<div lang=\"en\"></div>",
-			result:      Div("", Lang("en")),
+			result:      Div("", Attributes{"lang": "en"}),
 		},
 		{
 			description: "Render Nested Element",
@@ -47,7 +47,7 @@ func TestRender(t *testing.T) {
 		{
 			description: "It renders self closing tags",
 			expected:    "<link rel=\"stylesheet\" href=\"styles.css\" />",
-			result:      Link(Rel("stylesheet"), Href("styles.css")),
+			result:      Link(Attributes{"rel": "stylesheet", "href": "styles.css"}),
 		},
 	}
 
@@ -63,11 +63,11 @@ func TestHtmxCompatibility(t *testing.T) {
 		expected    string
 		rendered    string
 	}{
-		{
-			description: "Include htmx",
-			expected:    "<script src=\"https://unpkg.com/htmx.org@2.0.1\"></script>",
-			rendered:    Script("", ApplyHtmxCDNSource()),
-		},
+		// {
+		// 	description: "Include htmx",
+		// 	expected:    "<script src=\"https://unpkg.com/htmx.org@2.0.1\"></script>",
+		// 	rendered:    Script("", ApplyHtmxCDNSource()),
+		// },
 		{
 			description: "Empty Head Tag should include htmx by default", // ? not sure if this is correct at the moment
 			expected:    "<head><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",
@@ -83,8 +83,8 @@ func TestHtmxCompatibility(t *testing.T) {
 			expected:    "<head><title>ElementX</title><link rel=\"stylesheet\" href=\"styles.css\" /></head>",
 			rendered:    Head(
 				Title("ElementX") +
-				Link(Rel("stylesheet"), Href("styles.css")), 
-				ExcludeHtmx(),
+				Link(Attributes{"rel": "stylesheet", "href": "styles.css"}), 
+				Attributes{"excludeHtmx": "true"},
 			),
 		},
 	}
@@ -97,7 +97,7 @@ func TestSetAttribute(t *testing.T) {
 	assert := assert.New(t)
 
 	expected := "<html lang=\"en\"></html>"
-	element := HtmlElement{Tag: "html"}
+	element := HtmlElement{tag: "html"}
 	element.SetAttribute("lang", "en")
 	result := element.render()
 
@@ -116,7 +116,7 @@ func TestSetAttribute(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		element := HtmlElement{Tag: "html"}
+		element := HtmlElement{tag: "html"}
 		test.attribute(&element)
 		assert.Equal(test.expected, element.render(), test.description)
 	}
