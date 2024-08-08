@@ -47,7 +47,7 @@ func Src(source string) SetAttributes {
 }
 
 func ApplyHtmxCDNSource() SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(SRC, "https://unpkg.com/htmx.org@2.0.1") }
+	return func(e *HtmlElement) { e.SetAttribute(SRC, HTMX_CDN_SOURCE) }
 }
 
 func IncludeHtmx() string {
