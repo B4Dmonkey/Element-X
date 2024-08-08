@@ -112,20 +112,11 @@ func Head(c string, attrs ...Attributes) string {
 		c = c + IncludeHtmx()
 	}
 
-	// if len(attrs) > 0 {
-	// 	includeHtmx := true
-	// 	excludeHtmxFuncPointer := reflect.ValueOf(ExcludeHtmx).Pointer()
-	// 	for _, attr := range attrs {
-	// 		foo := reflect.ValueOf(attr).Pointer()
-	// 		// if excludeHtmxFuncPointer == reflect.ValueOf(attr).Pointer() {
-	// 		if foo == excludeHtmxFuncPointer {
-	// 			includeHtmx = false
-	// 			break
-	// 		}
-	// 	}
-	// 	if includeHtmx {
-	// 		c = c + IncludeHtmx()
-	// 	}
-	// }
+	if len(attrs) > 0 {
+		if _, includeHtmx := attrs[0]["excludeHtmx"]; !includeHtmx {
+			c = c + IncludeHtmx()
+		}
+		delete(attrs[0], "excludeHtmx")
+	}
 	return Render(HEAD, c, attrs)
 }

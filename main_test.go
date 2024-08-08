@@ -81,9 +81,9 @@ func TestHtmxCompatibility(t *testing.T) {
 		{
 			description: "Optionally exclude htmx from Head Tag",
 			expected:    "<head><title>ElementX</title><link rel=\"stylesheet\" href=\"styles.css\" /></head>",
-			rendered:    Head(
-				Title("ElementX") +
-				Link(Attributes{"rel": "stylesheet", "href": "styles.css"}), 
+			rendered: Head(
+				Title("ElementX")+
+					Link(Attributes{"rel": "stylesheet", "href": "styles.css"}),
 				Attributes{"excludeHtmx": "true"},
 			),
 		},
