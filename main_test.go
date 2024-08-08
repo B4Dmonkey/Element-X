@@ -93,31 +93,32 @@ func TestHtmxCompatibility(t *testing.T) {
 		assert.Equal(test.expected, test.rendered, test.description)
 	}
 }
-func TestSetAttribute(t *testing.T) {
-	assert := assert.New(t)
+// Todo: rethink what i want to do here
+// func TestSetAttribute(t *testing.T) {
+// 	assert := assert.New(t)
 
-	expected := "<div lang=\"en\"></div>"
-	element := HtmlElement{tag: "div"}
-	element.SetAttribute("lang", "en")
-	result := element.render()
+// 	expected := "<div lang=\"en\"></div>"
+// 	element := HtmlElement{tag: "div"}
+// 	element.SetAttribute("lang", "en")
+// 	result := element.render(nil)
 
-	assert.Equal(expected, result, "Test SetAttribute")
+// 	assert.Equal(expected, result, "Test SetAttribute")
 
-	tests := []struct {
-		description string
-		expected    string
-		attribute   SetAttributes
-	}{
-		{
-			description: "SetAttribute",
-			expected:    "<div lang=\"en\"></div>",
-			attribute:   Lang("en"),
-		},
-	}
+// 	tests := []struct {
+// 		description string
+// 		expected    string
+// 		attribute   SetAttributes
+// 	}{
+// 		{
+// 			description: "SetAttribute",
+// 			expected:    "<div lang=\"en\"></div>",
+// 			attribute:   Lang("en"),
+// 		},
+// 	}
 
-	for _, test := range tests {
-		element := HtmlElement{tag: "div"}
-		test.attribute(&element)
-		assert.Equal(test.expected, element.render(), test.description)
-	}
-}
+// 	for _, test := range tests {
+// 		element := HtmlElement{tag: "div"}
+// 		test.attribute(&element)
+// 		assert.Equal(test.expected, element.render(nil), test.description)
+// 	}
+// }

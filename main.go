@@ -11,38 +11,33 @@ type HtmlElement struct {
 	attributes SetAttr
 }
 
-type SetAttributes func(*HtmlElement)
+type SetAttributes func(*HtmlElement) string
 type SetAttr map[string]string
 
-var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string) SetAttributes{
-	LANG: Lang,
-	SRC:  Src,
-	REL:  Rel,
-	HREF: Href,
-}
+// var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string) SetAttributes{
+// 	LANG: Lang,
+// 	SRC:  Src,
+// 	REL:  Rel,
+// 	HREF: Href,
+// }
 
 func Render(tag string, content string, attrs []SetAttr) string {
 	element := HtmlElement{tag: tag, content: content}
 	if len(attrs) == 0 {
-		return element.render()
+		return element.render(nil)
 	}
+	return element.render(attrs)
 
-	attributes := attrs[0]
-	for attr, value := range attributes {
-		setter := lookUpSetter[attr]
-		if setter != nil {
-			setter(value)(&element)
-		} else {
-			element.SetAttribute(attr, value)
-		}
-	}
-	return element.render()
 }
 
-func (e *HtmlElement) render() string {
+func (e *HtmlElement) render(attrs []SetAttr) string {
+
 	attributes := ""
-	for key, value := range e.attributes {
-		attributes += fmt.Sprintf(` %s="%s"`, key, value)
+	if attrs != nil {
+		attributes_to_set := attrs[0]
+		for attribute, value := range attributes_to_set {
+			attributes += fmt.Sprintf(` %s="%s"`, attribute, value)
+		}
 	}
 
 	if e.tag == HTML {
@@ -72,33 +67,33 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 	e.attributes[key] = value
 }
 
-func Lang(lang string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(LANG, lang) }
-}
+// func Lang(lang string) SetAttributes {
+// 	return func(e *HtmlElement) { e.SetAttribute(LANG, lang) }
+// }
 
-func Src(source string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(SRC, source) }
-}
+// func Src(source string) SetAttributes {
+// 	return func(e *HtmlElement) { e.SetAttribute(SRC, source) }
+// }
 
-func ApplyHtmxCDNSource() SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(SRC, HTMX_CDN_SOURCE) }
-}
+// func ApplyHtmxCDNSource() SetAttributes {
+// 	return func(e *HtmlElement) { e.SetAttribute(SRC, HTMX_CDN_SOURCE) }
+// }
 
 func IncludeHtmx() string {
 	return Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE})
 }
 
-func ExcludeHtmx() SetAttributes {
-	return func(e *HtmlElement) { delete(e.attributes, SRC) }
-}
+// func ExcludeHtmx() SetAttributes {
+// 	return func(e *HtmlElement) { delete(e.attributes, SRC) }
+// }
 
-func Rel(rel string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(REL, rel) }
-}
+// func Rel(rel string) SetAttributes {
+// 	return func(e *HtmlElement) { e.SetAttribute(REL, rel) }
+// }
 
-func Href(href string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(HREF, href) }
-}
+// func Href(href string) SetAttributes {
+// 	return func(e *HtmlElement) { e.SetAttribute(HREF, href) }
+// }
 
 func P(c string, attrs ...SetAttr) string      { return Render("p", c, attrs) }
 func Html(c string, attrs ...SetAttr) string   { return Render(HTML, c, attrs) }
