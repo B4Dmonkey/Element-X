@@ -35,17 +35,4 @@ func Lang(lang string) SetElementAttributes {
 	}
 }
 
-// func Html(content string, attr ...SetElementAttributes) string {
-// 	tag := "<html"
-// 	element := HtmlElement{Tag: tag}
-
-// 	for _, set_attr := range attr {
-// 		set_attr(&element)
-// 	}
-
-// 	element.UpdateTag(">")
-// 	fmt.Println(element.Tag)
-// 	return "<html><body>" + content + "</body></html>"
-// }
-
-func Html(content string) *HtmlElement { return &HtmlElement{Tag: "html", Content: content} }
+func Html(content string) string { return Render(&HtmlElement{Tag: "html", Content: content} )}

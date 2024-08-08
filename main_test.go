@@ -8,11 +8,8 @@ import (
 
 func TestRender(t *testing.T) {
 	assert := assert.New(t)
-
 	expected := "<html></html>"
-	
-	result := Render(Html(""))
-
+	result := Html("")
 	assert.Equal(expected, result, "Test Render")
 }
 
