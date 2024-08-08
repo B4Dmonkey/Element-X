@@ -96,8 +96,8 @@ func TestHtmxCompatibility(t *testing.T) {
 func TestSetAttribute(t *testing.T) {
 	assert := assert.New(t)
 
-	expected := "<html lang=\"en\"></html>"
-	element := HtmlElement{tag: "html"}
+	expected := "<div lang=\"en\"></div>"
+	element := HtmlElement{tag: "div"}
 	element.SetAttribute("lang", "en")
 	result := element.render()
 
@@ -110,13 +110,13 @@ func TestSetAttribute(t *testing.T) {
 	}{
 		{
 			description: "SetAttribute",
-			expected:    "<html lang=\"en\"></html>",
+			expected:    "<div lang=\"en\"></div>",
 			attribute:   Lang("en"),
 		},
 	}
 
 	for _, test := range tests {
-		element := HtmlElement{tag: "html"}
+		element := HtmlElement{tag: "div"}
 		test.attribute(&element)
 		assert.Equal(test.expected, element.render(), test.description)
 	}

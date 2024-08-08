@@ -84,9 +84,9 @@ func ApplyHtmxCDNSource() SetAttributes {
 	return func(e *HtmlElement) { e.SetAttribute(SRC, HTMX_CDN_SOURCE) }
 }
 
-// func IncludeHtmx() string {
-// 	return Script(NO_CONTENT, SRC)
-// }
+func IncludeHtmx() string {
+	return Script(NO_CONTENT, Attributes{SRC: HTMX_CDN_SOURCE})
+}
 
 func ExcludeHtmx() SetAttributes {
 	return func(e *HtmlElement) { delete(e.attributes, SRC) }
@@ -108,9 +108,9 @@ func Script(c string, attrs ...Attributes) string { return Render(SCRIPT, c, att
 func Title(c string, attrs ...Attributes) string  { return Render(TITLE, c, attrs) }
 func Link(attrs ...Attributes) string             { return Render(LINK, NO_CONTENT, attrs) }
 func Head(c string, attrs ...Attributes) string {
-	// if len(attrs) == 0 {
-	// 	c = c + IncludeHtmx()
-	// }
+	if len(attrs) == 0 {
+		c = c + IncludeHtmx()
+	}
 
 	// if len(attrs) > 0 {
 	// 	includeHtmx := true
