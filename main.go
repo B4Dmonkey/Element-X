@@ -39,7 +39,7 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 }
 
 func Lang(lang string) SetAttributes {
-	return func(e *HtmlElement) { e.SetAttribute(LANG, "en") }
+	return func(e *HtmlElement) { e.SetAttribute(LANG, lang) }
 }
 
 func Src(source string) SetAttributes {
