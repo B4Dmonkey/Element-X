@@ -21,18 +21,28 @@ func TestRender(t *testing.T) {
 		},
 		{
 			description:     "Render Element with Content",
-			expected:        "<html>Hey young world</html>",
-			renderedElement: func() string { return Html("Hey young world") },
+			expected:        "<div>Hey young world</div>",
+			renderedElement: func() string { return Div("Hey young world") },
 		},
 		{
 			description:     "Render Element with Attribute",
-			expected:        "<html lang=\"en\"></html>",
-			renderedElement: func() string { return Html("", Lang("en")) },
+			expected:        "<div lang=\"en\"></div>",
+			renderedElement: func() string { return Div("", Lang("en")) },
 		},
 		{
 			description:     "Render Nested Element",
-			expected:        "<html><body></body></html>",
-			renderedElement: func() string { return Html(Body("")) },
+			expected:        "<body><div></div></body>",
+			renderedElement: func() string { return Body(Div("")) },
+		},
+		{
+			description:     "Render Multiple Elements on the Same Level",
+			expected:        "<div>Hey young world</div><div>The world is yours</div>",
+			renderedElement: func() string { return Div("Hey young world") + Div("The world is yours") },
+		},
+		{
+			description:     "Render Multiple Elements Nested",
+			expected:        "<body><div></div><div></div></body>",
+			renderedElement: func() string { return Body(Div("") + Div("")) },
 		},
 	}
 
