@@ -27,7 +27,7 @@ func TestRender(t *testing.T) {
 		{
 			description: "Render Element with Attribute",
 			expected:    "<div lang=\"en\"></div>",
-			result:      Div("", Attributes{"lang": "en"}),
+			result:      Div("", SetAttr{"lang": "en"}),
 		},
 		{
 			description: "Render Nested Element",
@@ -47,7 +47,7 @@ func TestRender(t *testing.T) {
 		{
 			description: "It renders self closing tags",
 			expected:    "<link rel=\"stylesheet\" href=\"styles.css\" />",
-			result:      Link(Attributes{"rel": "stylesheet", "href": "styles.css"}),
+			result:      Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
 		},
 	}
 
@@ -83,8 +83,8 @@ func TestHtmxCompatibility(t *testing.T) {
 			expected:    "<head><title>ElementX</title><link rel=\"stylesheet\" href=\"styles.css\" /></head>",
 			rendered: Head(
 				Title("ElementX")+
-					Link(Attributes{"rel": "stylesheet", "href": "styles.css"}),
-				Attributes{"excludeHtmx": "true"},
+					Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
+				SetAttr{"excludeHtmx": "true"},
 			),
 		},
 	}

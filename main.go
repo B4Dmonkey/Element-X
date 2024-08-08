@@ -8,11 +8,11 @@ import (
 type HtmlElement struct {
 	tag        string
 	content    string
-	attributes Attributes
+	attributes SetAttr
 }
 
 type SetAttributes func(*HtmlElement)
-type Attributes map[string]string
+type SetAttr map[string]string
 
 var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string) SetAttributes{
 	LANG: Lang,
@@ -21,7 +21,7 @@ var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string)
 	HREF: Href,
 }
 
-func Render(tag string, content string, attrs []Attributes) string {
+func Render(tag string, content string, attrs []SetAttr) string {
 	element := HtmlElement{tag: tag, content: content}
 	if len(attrs) == 0 {
 		return element.render()
@@ -85,7 +85,7 @@ func ApplyHtmxCDNSource() SetAttributes {
 }
 
 func IncludeHtmx() string {
-	return Script(NO_CONTENT, Attributes{SRC: HTMX_CDN_SOURCE})
+	return Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE})
 }
 
 func ExcludeHtmx() SetAttributes {
@@ -100,14 +100,14 @@ func Href(href string) SetAttributes {
 	return func(e *HtmlElement) { e.SetAttribute(HREF, href) }
 }
 
-func P(c string, attrs ...Attributes) string      { return Render("p", c, attrs) }
-func Html(c string, attrs ...Attributes) string   { return Render(HTML, c, attrs) }
-func Body(c string, attrs ...Attributes) string   { return Render(BODY, c, attrs) }
-func Div(c string, attrs ...Attributes) string    { return Render(DIV, c, attrs) }
-func Script(c string, attrs ...Attributes) string { return Render(SCRIPT, c, attrs) }
-func Title(c string, attrs ...Attributes) string  { return Render(TITLE, c, attrs) }
-func Link(attrs ...Attributes) string             { return Render(LINK, NO_CONTENT, attrs) }
-func Head(c string, attrs ...Attributes) string {
+func P(c string, attrs ...SetAttr) string      { return Render("p", c, attrs) }
+func Html(c string, attrs ...SetAttr) string   { return Render(HTML, c, attrs) }
+func Body(c string, attrs ...SetAttr) string   { return Render(BODY, c, attrs) }
+func Div(c string, attrs ...SetAttr) string    { return Render(DIV, c, attrs) }
+func Script(c string, attrs ...SetAttr) string { return Render(SCRIPT, c, attrs) }
+func Title(c string, attrs ...SetAttr) string  { return Render(TITLE, c, attrs) }
+func Link(attrs ...SetAttr) string             { return Render(LINK, NO_CONTENT, attrs) }
+func Head(c string, attrs ...SetAttr) string {
 	if len(attrs) == 0 {
 		c = c + IncludeHtmx()
 	}
