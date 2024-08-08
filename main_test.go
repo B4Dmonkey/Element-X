@@ -8,9 +8,27 @@ import (
 
 func TestRender(t *testing.T) {
 	assert := assert.New(t)
-	expected := "<html></html>"
-	result := Html("")
-	assert.Equal(expected, result, "Test Render")
+
+	tests := []struct {
+		description     string
+		expected        string
+		renderedElement func() string
+	}{
+		{
+			description:     "Render Empty Element",
+			expected:        "<html></html>",
+			renderedElement: func() string { return Html("") },
+		},
+		{
+			description:     "Render Element with Content",
+			expected:        "<html>Hey young world</html>",
+			renderedElement: func() string { return Html("Hey young world") },
+		},
+	}
+
+	for _, test := range tests {
+		assert.Equal(test.renderedElement(), test.expected, test.description)
+	}
 }
 
 func TestSetAttribute(t *testing.T) {
@@ -23,15 +41,15 @@ func TestSetAttribute(t *testing.T) {
 
 	assert.Equal(expected, result, "Test SetAttribute")
 
-	tests:= []struct {
+	tests := []struct {
 		description string
-		expected string
-		attribute SetElementAttributes
+		expected    string
+		attribute   SetElementAttributes
 	}{
 		{
 			description: "SetAttribute",
-			expected: "<html lang=\"en\"></html>",
-			attribute:  Lang("en"),
+			expected:    "<html lang=\"en\"></html>",
+			attribute:   Lang("en"),
 		},
 	}
 
