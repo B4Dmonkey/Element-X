@@ -46,8 +46,13 @@ func TestRender(t *testing.T) {
 		},
 		{
 			description: "It renders self closing tags",
-			expected:    "<link rel=\"stylesheet\" href=\"styles.css\" />",
+			expected:    "<link href=\"styles.css\" rel=\"stylesheet\" />",
 			result:      Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
+		},
+		{
+			description: "It renders fake tags with fake attributes",
+			expected:    "<fake fake=\"fake\">Its all fake</fake>",
+			result:      Render("fake", "Its all fake", []SetAttr{{"fake": "fake"}}),
 		},
 	}
 
@@ -80,7 +85,7 @@ func TestHtmxCompatibility(t *testing.T) {
 		},
 		{
 			description: "Optionally exclude htmx from Head Tag",
-			expected:    "<head><title>ElementX</title><link rel=\"stylesheet\" href=\"styles.css\" /></head>",
+			expected:    "<head><title>ElementX</title><link href=\"styles.css\" rel=\"stylesheet\" /></head>",
 			rendered: Head(
 				Title("ElementX")+
 					Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
@@ -93,6 +98,7 @@ func TestHtmxCompatibility(t *testing.T) {
 		assert.Equal(test.expected, test.rendered, test.description)
 	}
 }
+
 // Todo: rethink what i want to do here
 // func TestSetAttribute(t *testing.T) {
 // 	assert := assert.New(t)

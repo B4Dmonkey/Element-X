@@ -2,6 +2,7 @@ package elemx
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 )
 
@@ -58,9 +59,15 @@ func (e *HtmlElement) render(attrs []SetAttr) string {
 
 	attributes := ""
 	if attrs != nil {
+		// * This done to stop test from being flaky. I dont care about the order
 		attributes_to_set := attrs[0]
-		for attribute, value := range attributes_to_set {
-			attributes += fmt.Sprintf(` %s="%s"`, attribute, value)
+		keys := make([]string, 0, len(attributes_to_set))
+		for key := range attributes_to_set {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			attributes += fmt.Sprintf(` %s="%s"`, key, attributes_to_set[key])
 		}
 	}
 
