@@ -16,7 +16,7 @@ func TestRender(t *testing.T) {
 	}{
 		{
 			description:     "Render Empty Element",
-			expected:        "<html></html>",
+			expected:        "<!DOCTYPE html><html></html>",
 			renderedElement: func() string { return Html("") },
 		},
 		{

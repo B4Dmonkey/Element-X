@@ -15,6 +15,11 @@ func Render(tag string, content string, attrs []SetAttributes) string {
 	for _, attr := range attrs {
 		attr(&element)
 	}
+
+	if tag == "html" {
+		return fmt.Sprintf("<!DOCTYPE html>%s", element.render())
+	}
+
 	return element.render()
 }
 
@@ -41,5 +46,5 @@ func Lang(lang string) SetAttributes {
 
 func Html(c string, attrs ...SetAttributes) string { return Render("html", c, attrs) }
 func Body(c string, attrs ...SetAttributes) string { return Render("body", c, attrs) }
-func Div(c string, attrs ...SetAttributes) string { return Render("div", c, attrs) }
+func Div(c string, attrs ...SetAttributes) string  { return Render("div", c, attrs) }
 func Head(c string, attrs ...SetAttributes) string { return Render("head", c, attrs) }
