@@ -1,4 +1,4 @@
-module github.com/B4Dmonkey/Element-X/elemx
+module github.com/B4Dmonkey/Element-X
 
 go 1.21.3
 
