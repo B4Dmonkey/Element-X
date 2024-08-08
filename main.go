@@ -2,7 +2,7 @@ package elemx
 
 import (
 	"fmt"
-	// "reflect"
+	"strconv"
 )
 
 type HtmlElement struct {
@@ -27,10 +27,34 @@ func Render(tag string, content string, attrs []SetAttr) string {
 		return element.render(nil)
 	}
 	return element.render(attrs)
-
 }
 
 func (e *HtmlElement) render(attrs []SetAttr) string {
+	var hasAttributesToSet SetAttr
+	if attrs != nil {
+		hasAttributesToSet = attrs[0]
+	} else {
+		hasAttributesToSet = nil
+	}
+
+	var includeHtmx bool
+
+	if e.tag == HEAD && hasAttributesToSet == nil {
+		includeHtmx = true
+	}
+
+	if e.tag == HEAD && hasAttributesToSet != nil {
+		if excludeHtmx, err := strconv.ParseBool(hasAttributesToSet["excludeHtmx"]); err == nil {
+			includeHtmx = !excludeHtmx
+		} else {
+			includeHtmx = true
+		}
+		delete(attrs[0], "excludeHtmx")
+	}
+
+	if includeHtmx {
+		e.content += IncludeHtmx()
+	}
 
 	attributes := ""
 	if attrs != nil {
@@ -75,17 +99,9 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 // 	return func(e *HtmlElement) { e.SetAttribute(SRC, source) }
 // }
 
-// func ApplyHtmxCDNSource() SetAttributes {
-// 	return func(e *HtmlElement) { e.SetAttribute(SRC, HTMX_CDN_SOURCE) }
-// }
-
 func IncludeHtmx() string {
 	return Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE})
 }
-
-// func ExcludeHtmx() SetAttributes {
-// 	return func(e *HtmlElement) { delete(e.attributes, SRC) }
-// }
 
 // func Rel(rel string) SetAttributes {
 // 	return func(e *HtmlElement) { e.SetAttribute(REL, rel) }
@@ -95,23 +111,11 @@ func IncludeHtmx() string {
 // 	return func(e *HtmlElement) { e.SetAttribute(HREF, href) }
 // }
 
-func P(c string, attrs ...SetAttr) string      { return Render("p", c, attrs) }
+func P(c string, attrs ...SetAttr) string      { return Render(P_TAG, c, attrs) }
 func Html(c string, attrs ...SetAttr) string   { return Render(HTML, c, attrs) }
 func Body(c string, attrs ...SetAttr) string   { return Render(BODY, c, attrs) }
 func Div(c string, attrs ...SetAttr) string    { return Render(DIV, c, attrs) }
 func Script(c string, attrs ...SetAttr) string { return Render(SCRIPT, c, attrs) }
 func Title(c string, attrs ...SetAttr) string  { return Render(TITLE, c, attrs) }
 func Link(attrs ...SetAttr) string             { return Render(LINK, NO_CONTENT, attrs) }
-func Head(c string, attrs ...SetAttr) string {
-	if len(attrs) == 0 {
-		c = c + IncludeHtmx()
-	}
-
-	if len(attrs) > 0 {
-		if _, includeHtmx := attrs[0]["excludeHtmx"]; !includeHtmx {
-			c = c + IncludeHtmx()
-		}
-		delete(attrs[0], "excludeHtmx")
-	}
-	return Render(HEAD, c, attrs)
-}
+func Head(c string, attrs ...SetAttr) string   { return Render(HEAD, c, attrs) }

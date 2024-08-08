@@ -63,11 +63,11 @@ func TestHtmxCompatibility(t *testing.T) {
 		expected    string
 		rendered    string
 	}{
-		// {
-		// 	description: "Include htmx",
-		// 	expected:    "<script src=\"https://unpkg.com/htmx.org@2.0.1\"></script>",
-		// 	rendered:    Script("", ApplyHtmxCDNSource()),
-		// },
+		{
+			description: "Include htmx",
+			expected:    "<script src=\"https://unpkg.com/htmx.org@2.0.1\"></script>",
+			rendered:    Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE}),
+		},
 		{
 			description: "Empty Head Tag should include htmx by default", // ? not sure if this is correct at the moment
 			expected:    "<head><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",

@@ -14,4 +14,5 @@ const (
 	SCRIPT = "script"
 	SRC    = "src"
 	TITLE  = "title"
+	P_TAG 		= "p"
 )
