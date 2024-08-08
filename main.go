@@ -40,11 +40,11 @@ func (e *HtmlElement) render(attrs []SetAttr) string {
 
 	var includeHtmx bool
 
-	if e.tag == HEAD && hasAttributesToSet == nil {
+	if e.tag == HTML_HEAD_TAG && hasAttributesToSet == nil {
 		includeHtmx = true
 	}
 
-	if e.tag == HEAD && hasAttributesToSet != nil {
+	if e.tag == HTML_HEAD_TAG && hasAttributesToSet != nil {
 		if excludeHtmx, err := strconv.ParseBool(hasAttributesToSet["excludeHtmx"]); err == nil {
 			includeHtmx = !excludeHtmx
 		} else {
@@ -71,7 +71,7 @@ func (e *HtmlElement) render(attrs []SetAttr) string {
 		}
 	}
 
-	if e.tag == HTML {
+	if e.tag == HTML_HTML_TAG {
 		return fmt.Sprintf("<!DOCTYPE html><%s%s>%s</%s>", e.tag, attributes, e.content, e.tag)
 	}
 
@@ -83,7 +83,7 @@ func (e *HtmlElement) render(attrs []SetAttr) string {
 }
 
 func (e *HtmlElement) isSelfClosing() bool {
-	for _, tag := range []string{LINK} {
+	for _, tag := range []string{HTML_LINK_TAG} {
 		if e.tag == tag {
 			return true
 		}
@@ -117,4 +117,3 @@ func IncludeHtmx() string {
 // func Href(href string) SetAttributes {
 // 	return func(e *HtmlElement) { e.SetAttribute(HREF, href) }
 // }
-
