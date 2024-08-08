@@ -91,6 +91,7 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 	e.attributes[key] = value
 }
 
+// ? There may be an opportunity to do type safe attribute setting
 // var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string) SetAttributes{
 // 	LANG: Lang,
 // 	SRC:  Src,

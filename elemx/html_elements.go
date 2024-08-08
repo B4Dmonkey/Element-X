@@ -6,6 +6,10 @@ func Head(c string, attrs ...SetAttr) string   { return Render(HTML_HEAD_TAG, c,
 func Html(c string, attrs ...SetAttr) string   { return Render(HTML_HTML_TAG, c, attrs) }
 func Link(attrs ...SetAttr) string             { return Render(HTML_LINK_TAG, NO_CONTENT, attrs) }
 func P(c string, attrs ...SetAttr) string      { return Render(HTML_P_TAG, c, attrs) }
+// Script creates a <script> HTML element with the given content and attributes.
+// content: The inner content of the <script> tag.
+// attrs: A map of attributes to set on the <script> tag.
+// Returns a string representing the <script> HTML element.
 func Script(c string, attrs ...SetAttr) string { return Render(HTML_SCRIPT_TAG, c, attrs) }
 func Title(c string, attrs ...SetAttr) string  { return Render(HTML_TITLE_TAG, c, attrs) }
 
