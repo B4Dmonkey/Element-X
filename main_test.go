@@ -29,6 +29,11 @@ func TestRender(t *testing.T) {
 			expected:        "<html lang=\"en\"></html>",
 			renderedElement: func() string { return Html("", Lang("en")) },
 		},
+		{
+			description:     "Render Nested Element",
+			expected:        "<html><body></body></html>",
+			renderedElement: func() string { return Html(Body("")) },
+		},
 	}
 
 	for _, test := range tests {

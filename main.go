@@ -40,3 +40,4 @@ func Lang(lang string) SetAttributes {
 }
 
 func Html(c string, attrs ...SetAttributes) string { return Render("html", c, attrs) }
+func Body(c string, attrs ...SetAttributes) string { return Render("body", c, attrs) }
