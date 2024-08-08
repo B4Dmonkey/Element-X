@@ -15,13 +15,6 @@ type HtmlElement struct {
 type SetAttributes func(*HtmlElement) string
 type SetAttr map[string]string
 
-// var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string) SetAttributes{
-// 	LANG: Lang,
-// 	SRC:  Src,
-// 	REL:  Rel,
-// 	HREF: Href,
-// }
-
 func Render(tag string, content string, attrs []SetAttr) string {
 	element := HtmlElement{tag: tag, content: content}
 	if len(attrs) == 0 {
@@ -54,7 +47,7 @@ func (e *HtmlElement) render(attrs []SetAttr) string {
 	}
 
 	if includeHtmx {
-		e.content += IncludeHtmx()
+		e.content += Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE})
 	}
 
 	attributes := ""
@@ -98,6 +91,13 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 	e.attributes[key] = value
 }
 
+// var lookUpSetter map[string]func(string) SetAttributes = map[string]func(string) SetAttributes{
+// 	LANG: Lang,
+// 	SRC:  Src,
+// 	REL:  Rel,
+// 	HREF: Href,
+// }
+
 // func Lang(lang string) SetAttributes {
 // 	return func(e *HtmlElement) { e.SetAttribute(LANG, lang) }
 // }
@@ -105,10 +105,6 @@ func (e *HtmlElement) SetAttribute(key, value string) {
 // func Src(source string) SetAttributes {
 // 	return func(e *HtmlElement) { e.SetAttribute(SRC, source) }
 // }
-
-func IncludeHtmx() string {
-	return Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE})
-}
 
 // func Rel(rel string) SetAttributes {
 // 	return func(e *HtmlElement) { e.SetAttribute(REL, rel) }
