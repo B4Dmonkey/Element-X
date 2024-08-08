@@ -44,6 +44,11 @@ func TestRender(t *testing.T) {
 			expected:    "<body><div></div><div></div></body>",
 			result:      Body(Div("") + Div("")),
 		},
+		{
+			description: "It renders self closing tags",
+			expected:    "<link rel=\"stylesheet\" href=\"styles.css\" />",
+			result:      Link(Rel("stylesheet"), Href("styles.css")),
+		},
 	}
 
 	for _, test := range tests {
@@ -64,14 +69,23 @@ func TestHtmxCompatibility(t *testing.T) {
 			rendered:    Script("", ApplyHtmxCDNSource()),
 		},
 		{
-			description: "Empty Head Tag default include htmx", // ? not sure if this is correct at the moment
+			description: "Empty Head Tag should include htmx by default", // ? not sure if this is correct at the moment
 			expected:    "<head><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",
 			rendered:    Head(""),
 		},
 		{
-			description: "Empty Head Tag without htmx",
+			description: "Head Tag should include htmx by default",
 			expected:    "<head><title>ElementX</title><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",
 			rendered:    Head(Title("ElementX")),
+		},
+		{
+			description: "Optionally exclude htmx from Head Tag",
+			expected:    "<head><title>ElementX</title><link rel=\"stylesheet\" href=\"styles.css\" /></head>",
+			rendered:    Head(
+				Title("ElementX") +
+				Link(Rel("stylesheet"), Href("styles.css")), 
+				ExcludeHtmx(),
+			),
 		},
 	}
 
