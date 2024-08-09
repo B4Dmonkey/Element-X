@@ -15,6 +15,20 @@ type HtmlElement struct {
 type SetAttributes func(*HtmlElement) string
 type SetAttr map[string]string
 
+type Element func(c string, attrs ...SetAttr) string
+
+func renderElementFunc(tag string, hasContent bool) Element {
+    if hasContent {
+        return func(c string, attrs ...SetAttr) string {
+            return Render(tag, c, attrs)
+        }
+    } else {
+        return func(c string, attrs ...SetAttr) string {
+            return Render(tag, NO_CONTENT, attrs)
+        }
+    }
+}
+
 func Render(tag string, content string, attrs []SetAttr) string {
 	element := HtmlElement{tag: tag, content: content}
 	if len(attrs) == 0 {
