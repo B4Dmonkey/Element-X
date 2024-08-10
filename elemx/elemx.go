@@ -15,59 +15,52 @@ type HtmlElement struct {
 type SetAttributes func(*HtmlElement) string
 type SetAttr map[string]string
 
-type Element func(c string, attrs ...SetAttr) string
+type Element func(attrs SetAttr, c ...string) string
 
 func renderElementFunc(tag string, hasContent bool) Element {
-    if hasContent {
-        return func(c string, attrs ...SetAttr) string {
-            return Render(tag, c, attrs)
-        }
-    } else {
-        return func(c string, attrs ...SetAttr) string {
-            return Render(tag, NO_CONTENT, attrs)
-        }
-    }
+	if hasContent {
+		return func(attrs SetAttr, c ...string) string {
+			return Render(tag, attrs, c)
+		}
+	} else {
+		return func(attrs SetAttr, c ...string) string {
+			return Render(tag, attrs, nil)
+		}
+	}
 }
 
-func Render(tag string, content string, attrs []SetAttr) string {
-	element := HtmlElement{tag: tag, content: content}
+func Render(tag string, attrs SetAttr, content []string) string {
+	element := HtmlElement{tag: tag, content: content[0]}
 	if len(attrs) == 0 {
 		return element.render(nil)
 	}
 	return element.render(attrs)
 }
 
-func (e *HtmlElement) render(attrs []SetAttr) string {
-	var hasAttributesToSet SetAttr
-	if attrs != nil {
-		hasAttributesToSet = attrs[0]
-	} else {
-		hasAttributesToSet = nil
-	}
-
+func (e *HtmlElement) render(attrs SetAttr) string {
 	var includeHtmx bool
 
-	if e.tag == HTML_HEAD_TAG && hasAttributesToSet == nil {
+	if e.tag == HTML_HEAD_TAG && attrs == nil {
 		includeHtmx = true
 	}
 
-	if e.tag == HTML_HEAD_TAG && hasAttributesToSet != nil {
-		if excludeHtmx, err := strconv.ParseBool(hasAttributesToSet["excludeHtmx"]); err == nil {
+	if e.tag == HTML_HEAD_TAG && attrs != nil {
+		if excludeHtmx, err := strconv.ParseBool(attrs["excludeHtmx"]); err == nil {
 			includeHtmx = !excludeHtmx
 		} else {
 			includeHtmx = true
 		}
-		delete(attrs[0], "excludeHtmx")
+		delete(attrs, "excludeHtmx")
 	}
 
 	if includeHtmx {
-		e.content += Script(NO_CONTENT, SetAttr{SRC: HTMX_CDN_SOURCE})
+		e.content += Script(SetAttr{SRC: HTMX_CDN_SOURCE}, NO_CONTENT)
 	}
 
 	attributes := ""
 	if attrs != nil {
 		// * This done to stop test from being flaky. I dont care about the order
-		attributes_to_set := attrs[0]
+		attributes_to_set := attrs
 		keys := make([]string, 0, len(attributes_to_set))
 		for key := range attributes_to_set {
 			keys = append(keys, key)

@@ -1,7 +1,7 @@
 package elemx
 
 // ? This creates a cyclic dependency when following the pattern below
-func Script(c string, attrs ...SetAttr) string { return Render(HTML_SCRIPT_TAG, c, attrs) }
+func Script(attrs SetAttr, c ...string) string { return Render(HTML_SCRIPT_TAG, attrs, c) }
 
 var (
 	A      = renderElementFunc(HTML_A_TAG, true)
@@ -22,12 +22,12 @@ var (
 	Label  = renderElementFunc(HTML_LABEL_TAG, true)
 	Li     = renderElementFunc(HTML_LI_TAG, true)
 	// Link   = renderElementFunc(HTML_LINK_TAG, false)
-	Ol     = renderElementFunc(HTML_OL_TAG, true)
-	P      = renderElementFunc(HTML_P_TAG, true)
-	Span   = renderElementFunc(HTML_SPAN_TAG, true)
-	Table  = renderElementFunc(HTML_TABLE_TAG, true)
-	Td     = renderElementFunc(HTML_TD_TAG, true)
-	Title  = renderElementFunc(HTML_TITLE_TAG, true)
-	Tr     = renderElementFunc(HTML_TR_TAG, true)
-	Ul     = renderElementFunc(HTML_UL_TAG, true)
+	Ol    = renderElementFunc(HTML_OL_TAG, true)
+	P     = renderElementFunc(HTML_P_TAG, true)
+	Span  = renderElementFunc(HTML_SPAN_TAG, true)
+	Table = renderElementFunc(HTML_TABLE_TAG, true)
+	Td    = renderElementFunc(HTML_TD_TAG, true)
+	Title = renderElementFunc(HTML_TITLE_TAG, true)
+	Tr    = renderElementFunc(HTML_TR_TAG, true)
+	Ul    = renderElementFunc(HTML_UL_TAG, true)
 )
