@@ -34,32 +34,33 @@ func TestRender(t *testing.T) {
 			expected:    "<body><div></div></body>",
 			result:      Body(nil, Div(nil, "")),
 		},
-		// {
-		// 	description: "Render Multiple Elements on the Same Level",
-		// 	expected:    "<div>Hey young world</div><div>The world is yours</div>",
-		// 	result:      Div("Hey young world") + Div("The world is yours"),
-		// },
-		// {
-		// 	description: "Render Multiple Elements Nested",
-		// 	expected:    "<body><div></div><div></div></body>",
-		// 	result:      Body(nil, [Div(""),Div("")]),
-		// },
-		// {
-		// 	description: "It renders self closing tags",
-		// 	expected:    "<link href=\"styles.css\" rel=\"stylesheet\" />",
-		// 	result:      Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
-		// },
-		// {
-		// 	description: "It renders fake tags with fake attributes",
-		// 	expected:    "<fake fake=\"fake\">Its all fake</fake>",
-		// 	result:      Render("fake",SetAttr{"fake": "fake"},[ "Its all fake"]),
-		// },
+		{
+			description: "Render Multiple Elements on the Same Level",
+			expected:    "<div>Hey young world</div><div>The world is yours</div>",
+			result:      Div(nil, "Hey young world") + Div(nil, "The world is yours"),
+		},
+		{
+			description: "Render Multiple Elements Nested",
+			expected:    "<body><div></div><div></div></body>",
+			result:      Body(nil, Div(nil), Div(nil)),
+		},
+		{
+			description: "It renders self closing tags",
+			expected:    "<link href=\"styles.css\" rel=\"stylesheet\" />",
+			result:      Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
+		},
+		{
+			description: "It renders fake tags with fake attributes",
+			expected:    "<fake fake=\"fake\">Its all fake</fake>",
+			result:      Render("fake", SetAttr{"fake": "fake"}, []string{"Its all fake"}),
+		},
 	}
 
 	for _, test := range tests {
 		assert.Equal(test.expected, test.result, test.description)
 	}
 }
+
 func TestHtmxCompatibility(t *testing.T) {
 	assert := assert.New(t)
 
@@ -83,15 +84,16 @@ func TestHtmxCompatibility(t *testing.T) {
 			expected:    "<head><title>ElementX</title><script src=\"https://unpkg.com/htmx.org@2.0.1\"></script></head>",
 			rendered:    Head(nil, Title(nil, "ElementX")),
 		},
-		// {
-		// 	description: "Optionally exclude htmx from Head Tag",
-		// 	expected:    "<head><title>ElementX</title><link href=\"styles.css\" rel=\"stylesheet\" /></head>",
-		// 	rendered: Head(
-		// 		Title("ElementX")+
-		// 			Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
-		// 		SetAttr{"excludeHtmx": "true"},
-		// 	),
-		// },
+		{
+			description: "Optionally exclude htmx from Head Tag",
+			expected:    "<head><title>ElementX</title><link href=\"styles.css\" rel=\"stylesheet\" /></head>",
+			rendered: Head(
+				SetAttr{"excludeHtmx": "true"},
+				Title(nil,"ElementX"),
+				Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
+				
+			),
+		},
 	}
 
 	for _, test := range tests {

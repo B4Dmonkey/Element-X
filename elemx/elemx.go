@@ -17,8 +17,8 @@ type SetAttr map[string]string
 
 type Element func(attrs SetAttr, c ...string) string
 
-func renderElementFunc(tag string, hasContent bool) Element {
-	if hasContent {
+func renderElementFunc(tag string, hasClosingTag bool) Element {
+	if hasClosingTag {
 		return func(attrs SetAttr, c ...string) string {
 			return Render(tag, attrs, c)
 		}
@@ -30,7 +30,12 @@ func renderElementFunc(tag string, hasContent bool) Element {
 }
 
 func Render(tag string, attrs SetAttr, content []string) string {
-	element := HtmlElement{tag: tag, content: content[0]}
+	var innerHtml string
+	for _, c := range content {
+		innerHtml += c
+	}
+
+	element := HtmlElement{tag: tag, content: innerHtml}
 	if len(attrs) == 0 {
 		return element.render(nil)
 	}
