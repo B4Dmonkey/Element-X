@@ -27,7 +27,7 @@ func TestRender(t *testing.T) {
 		{
 			description: "Render Element with Attribute",
 			expected:    "<div lang=\"en\"></div>",
-			result:      Div(SetAttr{"lang": "en"}, ""),
+			result:      Div(Props{"lang": "en"}, ""),
 		},
 		{
 			description: "Render Nested Element",
@@ -47,12 +47,12 @@ func TestRender(t *testing.T) {
 		{
 			description: "It renders self closing tags",
 			expected:    "<link href=\"styles.css\" rel=\"stylesheet\" />",
-			result:      Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
+			result:      Link(Props{"rel": "stylesheet", "href": "styles.css"}),
 		},
 		{
 			description: "It renders fake tags with fake attributes",
 			expected:    "<fake fake=\"fake\">Its all fake</fake>",
-			result:      Render("fake", SetAttr{"fake": "fake"}, []string{"Its all fake"}),
+			result:      Render("fake", Props{"fake": "fake"}, []string{"Its all fake"}),
 		},
 	}
 
@@ -72,7 +72,7 @@ func TestHtmxCompatibility(t *testing.T) {
 		{
 			description: "Include htmx",
 			expected:    "<script src=\"https://unpkg.com/htmx.org@2.0.1\"></script>",
-			rendered:    Script(SetAttr{SRC: HTMX_CDN_SOURCE}, NO_CONTENT),
+			rendered:    Script(Props{SRC: HTMX_CDN_SOURCE}),
 		},
 		{
 			description: "Empty Head Tag should include htmx by default", // ? not sure if this is correct at the moment
@@ -88,10 +88,9 @@ func TestHtmxCompatibility(t *testing.T) {
 			description: "Optionally exclude htmx from Head Tag",
 			expected:    "<head><title>ElementX</title><link href=\"styles.css\" rel=\"stylesheet\" /></head>",
 			rendered: Head(
-				SetAttr{"excludeHtmx": "true"},
-				Title(nil,"ElementX"),
-				Link(SetAttr{"rel": "stylesheet", "href": "styles.css"}),
-				
+				Props{"excludeHtmx": "true"},
+				Title(nil, "ElementX"),
+				Link(Props{"rel": "stylesheet", "href": "styles.css"}),
 			),
 		},
 	}

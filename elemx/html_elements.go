@@ -1,7 +1,7 @@
 package elemx
 
 // ? This creates a cyclic dependency when following the pattern below
-func Script(attrs SetAttr, c ...string) string {
+func Script(attrs Props, c ...string) string {
 	return renderElementFunc(HTML_SCRIPT_TAG, true)(attrs, c...)
 }
 

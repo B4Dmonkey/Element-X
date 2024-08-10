@@ -31,7 +31,6 @@ const (
 	HTML_UL_TAG     string = "ul"
 	HTMX_CDN_SOURCE string = "https://unpkg.com/htmx.org@2.0.1"
 	LANG            string = "lang"
-	NO_CONTENT      string = ""
 	REL             string = "rel"
 	SRC             string = "src"
 )

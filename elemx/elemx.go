@@ -9,27 +9,27 @@ import (
 type HtmlElement struct {
 	tag        string
 	content    string
-	attributes SetAttr
+	attributes Props
 }
 
 type SetAttributes func(*HtmlElement) string
-type SetAttr map[string]string
+type Props map[string]string
 
-type Element func(attrs SetAttr, c ...string) string
+type Element func(attrs Props, c ...string) string
 
 func renderElementFunc(tag string, hasClosingTag bool) Element {
 	if hasClosingTag {
-		return func(attrs SetAttr, c ...string) string {
+		return func(attrs Props, c ...string) string {
 			return Render(tag, attrs, c)
 		}
 	} else {
-		return func(attrs SetAttr, c ...string) string {
+		return func(attrs Props, c ...string) string {
 			return Render(tag, attrs, nil)
 		}
 	}
 }
 
-func Render(tag string, attrs SetAttr, content []string) string {
+func Render(tag string, attrs Props, content []string) string {
 	var innerHtml string
 	for _, c := range content {
 		innerHtml += c
@@ -42,7 +42,7 @@ func Render(tag string, attrs SetAttr, content []string) string {
 	return element.render(attrs)
 }
 
-func (e *HtmlElement) render(attrs SetAttr) string {
+func (e *HtmlElement) render(attrs Props) string {
 	var includeHtmx bool
 
 	if e.tag == HTML_HEAD_TAG && attrs == nil {
@@ -59,7 +59,7 @@ func (e *HtmlElement) render(attrs SetAttr) string {
 	}
 
 	if includeHtmx {
-		e.content += Script(SetAttr{SRC: HTMX_CDN_SOURCE}, NO_CONTENT)
+		e.content += Script(Props{SRC: HTMX_CDN_SOURCE})
 	}
 
 	attributes := ""
