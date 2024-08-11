@@ -24,6 +24,7 @@ var (
 	Label  = renderElementFunc(HTML_LABEL_TAG, true)
 	Li     = renderElementFunc(HTML_LI_TAG, true)
 	Link   = renderElementFunc(HTML_LINK_TAG, false)
+	Main   = renderElementFunc(HTML_MAIN_TAG, true)
 	Ol     = renderElementFunc(HTML_OL_TAG, true)
 	P      = renderElementFunc(HTML_P_TAG, true)
 	Span   = renderElementFunc(HTML_SPAN_TAG, true)

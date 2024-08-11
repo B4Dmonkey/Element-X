@@ -20,6 +20,7 @@ const (
 	HTML_LABEL_TAG  string = "label"
 	HTML_LI_TAG     string = "li"
 	HTML_LINK_TAG   string = "link"
+	HTML_MAIN_TAG	 string = "main"
 	HTML_OL_TAG     string = "ol"
 	HTML_P_TAG      string = "p"
 	HTML_SCRIPT_TAG string = "script"
